@@ -1,0 +1,56 @@
+<!--
+add bootstrap
+--> 
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+{% include 'header.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option Selector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+</head>
+
+<body >
+    
+    <div class="container mt-5">
+        <h2>Add a new {{option}}</h2>
+        <form method="POST">
+            <div class="mb-3">
+                <label for="feedbackText" class="form-label"> </label>
+                <textarea class="form-control" id="value" name="value" rows="1" placeholder="type here...." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script>
+        function updateSelection(input) {
+    let selectedOption = document.getElementById('selectedOption');
+
+    // Reset all buttons
+    document.querySelectorAll('.d-flex label').forEach(label => {
+        label.classList.remove('btn-success');
+        label.classList.add('btn-outline-primary');
+    });
+
+    if (selectedOption.value === input.value) {
+        // Deselect if already selected
+        input.checked = false;
+        selectedOption.value = '';
+    } else {
+        // Apply selection
+        input.parentElement.classList.remove('btn-outline-primary');
+        input.parentElement.classList.add('btn-success');
+        selectedOption.value = input.value;
+    }
+}
+    </script>
+</body>
+</html>

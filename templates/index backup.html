@@ -1,0 +1,53 @@
+<!--i8
+add bootstrap
+--> 
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+<script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option Selector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+</head>
+<body class="d-flex justify-content-center align-items-center vh-100">
+    <div class="container text-center">
+        <h2>Select an Option</h2>
+        <form action="#" method="post">
+            <input type="hidden" name="option" id="selectedOption" value="">
+            <div class="d-flex flex-column flex-md-row justify-content-center gap-2" role="group" aria-label="Options" data-bs-toggle="buttons">
+                <label class="btn btn-outline-primary w-100">
+                    <input type="radio" name="option" id="option1" value="option1" class="d-none" autocomplete="off" onclick="updateSelection(this)"> Option 1
+                </label>
+                <label class="btn btn-outline-primary w-100">
+                    <input type="radio" name="option" id="option2" value="option2" class="d-none" autocomplete="off" onclick="updateSelection(this)"> Option 2
+                </label>
+                <label class="btn btn-outline-primary w-100">
+                    <input type="radio" name="option" id="option3" value="option3" class="d-none" autocomplete="off" onclick="updateSelection(this)"> Option 3
+                </label>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </form>
+    </div>
+    <script>
+        function updateSelection(input) {
+            document.querySelectorAll('.btn-group label').forEach(label => {
+                label.classList.remove('btn-success');
+                label.classList.add('btn-outline-primary');
+            });
+            
+            let selectedLabel = input.parentElement;
+            selectedLabel.classList.remove('btn-outline-primary');
+            selectedLabel.classList.add('btn-success');
+            
+            document.getElementById('selectedOption').value = input.value;
+        }
+    </script>
+</body>
+</html>
