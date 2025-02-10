@@ -67,4 +67,4 @@ def addnewselection():
 
 if __name__ == '__main__':
     print("Starting Flask app")
-    app.run(debug=False, host='0.0.0.0', port=5000, threaded=True)
+    app.run(debug=False, host='0.0.0.0', port=80, threaded=True)
