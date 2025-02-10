@@ -44,7 +44,7 @@ def drop_tables(con):
 
 def create_tables(con):
     # create a table and load data into it if it doesnt already exist
-    con.execute(sqlalchemy.text("CREATE TABLE if not exists health_log (date timestamp, recording text,user text)"))
+    con.execute(sqlalchemy.text("CREATE TABLE if not exists health_log (id int  primary key AUTO_INCREMENT, date timestamp, category text, value text,user text)"))
     con.execute(sqlalchemy.text("CREATE TABLE if not exists users (id int  primary key AUTO_INCREMENT, name text)"))
     con.execute(sqlalchemy.text("CREATE TABLE if not exists selections (selection text)"))
     con.commit()
@@ -57,17 +57,17 @@ def create_sequences(con):
 
 def insert_data(con):
     # insert data into the table
-    con.execute(sqlalchemy.text("INSERT INTO health_log VALUES ('2021-01-01', 'protien', 'test_user')"))
+    con.execute(sqlalchemy.text("INSERT INTO health_log (date,category,user) VALUES ('2021-01-01', 'Protein', 'test_user')"))
     con.execute(sqlalchemy.text("INSERT INTO users ( name) VALUES ('Michelle')"))
     con.execute(sqlalchemy.text("INSERT INTO users ( name) VALUES ('Paul')"))
-    con.execute(sqlalchemy.text("INSERT INTO selections VALUES ('Protien')"))
+    con.execute(sqlalchemy.text("INSERT INTO selections VALUES ('Protein')"))
     con.execute(sqlalchemy.text("INSERT INTO selections VALUES ('Carbs')"))
     con.execute(sqlalchemy.text("INSERT INTO selections VALUES ('Veggies')"))
     con.commit()
 
 def insert_health_log(con, date, recording, user):
     # insert data into the table
-    con.execute(sqlalchemy.text(f"INSERT INTO health_log VALUES ('{date}', '{recording}', '{user}')"))
+    con.execute(sqlalchemy.text(f"INSERT INTO health_log (date,category,user,value) VALUES ('{date}', '{recording}', '{user}', null)"))
     con.commit()
 
 def insert_selection(con, selection):

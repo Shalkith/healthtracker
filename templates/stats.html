@@ -29,8 +29,11 @@ only display the stats of the user that is logged in
             <thead>
                 <tr>
                     <th scope="col">Date</th>
-                    <th scope="col">Recording</th>
                     <th scope="col">User</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Value</th>
+
+                    
                 </tr>
             </thead>
             <tbody>
@@ -39,8 +42,9 @@ only display the stats of the user that is logged in
 
                 <tr>
                     <td>{{ stat.date }}</td>
-                    <td>{{ stat.recording }}</td>
                     <td>{{ stat.user }}</td>
+                    <td>{{ stat.category }}</td>
+                    <td>{{ stat.value }}</td>
                 </tr>
 
                 {% endfor %}

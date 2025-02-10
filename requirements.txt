@@ -1,3 +1,5 @@
 mysql-connector-python
 flask
 python-dotenv
+numpy
+matplotlib
