@@ -109,7 +109,7 @@ def setup():
     close_connection(con)
 
 if __name__ == '__main__':
-    setup()
+    #setup()
     query = 'select * from health_log'
     con = connect()
     print(get_data(con,query))
