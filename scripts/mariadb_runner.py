@@ -7,17 +7,17 @@ load_dotenv()
 def connect():
     '''
     create a .env file in the root directory of the project and add the following lines:
-    USER=your_username
-    PASSWORD=your_password
-    HOST=your_host
-    PORT=your_port
-    DB=your_db
+    DBUSER=your_database_username
+    DBPASSWORD=your_database_password
+    DBHOST=your_database_host
+    DBPORT=your_database_port
+    DB=your_db_name
     '''
 
-    user = os.getenv('USER')
-    password = os.getenv('PASSWORD')
-    host = os.getenv('HOST')
-    port = os.getenv('PORT')
+    user = os.getenv('DBUSER')
+    password = os.getenv('DBPASSWORD')
+    host = os.getenv('DBHOST')
+    port = os.getenv('DBPORT')
     db = os.getenv('DB')
 
 
