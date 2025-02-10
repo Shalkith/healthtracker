@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request,redirect, Response
+from flask import Flask, render_template,request,redirect, Response, flash
 #from scripts import duckdb_runner
 from scripts import mariadb_runner
 from datetime import datetime
@@ -10,9 +10,11 @@ db_runner = mariadb_runner
 
 
 app = Flask(__name__)
+app.secret_key = "your_secret_key"  # Required for flashing messages
 
 @app.route("/",  methods=["GET", "POST"])
 def main():
+    
     if request.method == "GET":
         now = datetime.now()
         date = now.strftime("%Y-%m-%d %H:%M:%S")
@@ -33,6 +35,8 @@ def main():
         db_runner.insert_health_log(con,date,selection,user)
         db_runner.close_connection(con)
         # redirect back to the index page
+        flash(f"Added {selection} for {user} on {date}", "success")  
+        
         return redirect("/")
 
         
@@ -46,6 +50,7 @@ def insert():
     selection = request.form['selection']
     db_runner.insert_selection(con,selection)
     db_runner.close_connection(con)
+    flash(f"Added {selection}", "success")
     return redirect("/")
 
 @app.route("/addnewuser",  methods=["GET", "POST"])    
@@ -56,6 +61,7 @@ def addnewuser():
     user = request.form['value']
     db_runner.insert_user(con,user)
     db_runner.close_connection(con)
+    flash(f"Added {user}", "success")
     return redirect("/")
 
 @app.route("/addnewselection",  methods=["GET", "POST"])    
@@ -66,6 +72,7 @@ def addnewselection():
     selection = request.form['value']
     db_runner.insert_selection(con,selection)
     db_runner.close_connection(con)
+    flash(f"Added {selection}", "success")
     return redirect("/")
 
 @app.route("/stats/<user>",  methods=["GET", "POST"])
@@ -89,6 +96,11 @@ def getstats():
 
 
     return redirect("/")
+
+@app.route("/flash")
+def index():
+    flash("This is a toast message!", "success")  # Flash message with a category
+    return render_template("toast.html")
 
 @app.route('/plot.png')
 def plot():
