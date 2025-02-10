@@ -1,0 +1,53 @@
+<!--
+this page will get a list of all the users and display their stats
+`date`	recording	`user`
+
+only display the stats of the user that is logged in
+--> 
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+{% include 'header.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2>Stats</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Recording</th>
+                    <th scope="col">User</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in stats %}
+                
+
+                <tr>
+                    <td>{{ stat.date }}</td>
+                    <td>{{ stat.recording }}</td>
+                    <td>{{ stat.user }}</td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+</html>

@@ -1,0 +1,36 @@
+<!--
+this page will get a list of all the users in the database and display their name as a link for stats
+--> 
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+{% include 'header.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get User</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+</head>
+
+<body>
+
+    <div class="container mt-4">
+        <h2 class="text-center">Get User</h2>
+        <div class="list-group mt-3">
+            {% for user in users %}
+            <a href="{{ url_for('stats', user=user[1]) }}" class="list-group-item list-group-item-action text-center text-white bg-primary mb-2">
+                {{ user[1] }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>

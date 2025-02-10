@@ -1,14 +1,26 @@
 import sqlalchemy
 from sqlalchemy import create_engine
-import pandas as pd
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 def connect():
-    user = 'username'
-    password = 'password'
-    host = 'host'
-    port = 'port'
-    db = 'dbname'
+    '''
+    create a .env file in the root directory of the project and add the following lines:
+    USER=your_username
+    PASSWORD=your_password
+    HOST=your_host
+    PORT=your_port
+    DB=your_db
+    '''
+
+    user = os.getenv('USER')
+    password = os.getenv('PASSWORD')
+    host = os.getenv('HOST')
+    port = os.getenv('PORT')
+    db = os.getenv('DB')
+
+
 
 
     # connect to the # mariadb
@@ -97,7 +109,7 @@ def setup():
     close_connection(con)
 
 if __name__ == '__main__':
-    #setup()
+    setup()
     query = 'select * from health_log'
     con = connect()
     print(get_data(con,query))

@@ -65,6 +65,27 @@ def addnewselection():
     db_runner.close_connection(con)
     return redirect("/")
 
+@app.route("/stats/<user>",  methods=["GET", "POST"])
+def stats(user):
+    
+    con = db_runner.connect()
+    if request.method == "GET":
+        #users = db_runner.get_data(con,'select * from users')
+        stats = db_runner.get_data(con,f"select * from health_log where user = '{user}'")
+        return render_template('stats.html',users=user,stats=stats)
+
+
+@app.route("/stats/",  methods=["GET", "POST"])
+def getstats():
+    con = db_runner.connect()
+    if request.method == "GET":
+        users = db_runner.get_data(con,'select * from users')
+        return render_template('get_user.html',users=users)
+
+
+    return redirect("/")
+
+
 if __name__ == '__main__':
     print("Starting Flask app")
     app.run(debug=False, host='0.0.0.0', port=80, threaded=True)
