@@ -33,11 +33,17 @@ add bootstrap
 
             <input type="hidden" name="option" id="selectedOption" value="" required>
             <div class="d-flex flex-column flex-md-row justify-content-center gap-2" role="group" aria-label="Options" data-bs-toggle="buttons" required>
+                <label for="feedbackText" class="form-label"> </label>
+                <textarea class="form-control" id="notes" name="notes" rows="1" placeholder="type notes here..."></textarea>
+<!---line break here-->
+</div><br><div class="d-flex flex-column flex-md-row justify-content-center gap-2" role="group" aria-label="Options" data-bs-toggle="buttons" required>
+
                 {% for option in selections %}
                 <label class="btn btn-outline-primary w-100">
                     <input type="radio" name="option" id="{{option['selection']}}" value="{{option['selection']}}" class="d-none" autocomplete="off" onclick="updateSelection(this)" required>{{option['selection']}}
                 </label>
                 {% endfor %}
+
             </div>
             <br>
             <button type="submit" class="btn btn-primary w-100">Submit</button>

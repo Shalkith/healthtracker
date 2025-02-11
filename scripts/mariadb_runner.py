@@ -65,9 +65,9 @@ def insert_data(con):
     con.execute(sqlalchemy.text("INSERT INTO selections VALUES ('Veggies')"))
     con.commit()
 
-def insert_health_log(con, date, recording, user):
+def insert_health_log(con, date, recording, user,notes):
     # insert data into the table
-    con.execute(sqlalchemy.text(f"INSERT INTO health_log (date,category,user,value) VALUES ('{date}', '{recording}', '{user}', null)"))
+    con.execute(sqlalchemy.text(f"INSERT INTO health_log (date,category,user,value) VALUES ('{date}', '{recording}', '{user}', '{notes}')"))
     con.commit()
 
 def insert_selection(con, selection):

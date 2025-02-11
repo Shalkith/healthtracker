@@ -32,7 +32,8 @@ def main():
         selection = request.form['option']
         user = request.form['name']
         date = request.form['date']
-        db_runner.insert_health_log(con,date,selection,user)
+        notes = request.form['notes']
+        db_runner.insert_health_log(con,date,selection,user,notes)
         db_runner.close_connection(con)
         # redirect back to the index page
         flash(f"Added {selection} for {user} on {date}", "success")  
@@ -122,10 +123,10 @@ def plot():
 
     return Response(img.getvalue(), mimetype='image/png')
 
-@app.route('/bar_chart.png')
-def bar_chart():
+@app.route('/<user>/bar_chart.png')
+def bar_chart(user):
     con = db_runner.connect()
-    stats = db_runner.get_data(con,f"select * from health_log where user = 'Paul'")
+    stats = db_runner.get_data(con,f"select * from health_log where user = '{user}' order by date asc")
     db_runner.close_connection(con)     
     data = {}
     data['dates'] = {}
@@ -134,9 +135,9 @@ def bar_chart():
     #dates = ["2024-01", "2024-02", "2024-03"]
     
     for row in stats:
-        date = row[0]
-        category = row[1]
-        user = row[2]
+        date = row[1]
+        category = row[2]
+        user = row[4]
         if date in data['dates']:
             if category in data['dates'][date]:
                 data['dates'][date][category] += 1
@@ -148,19 +149,30 @@ def bar_chart():
     dates = list(data['dates'].keys())
     carbs = [data['dates'][date].get('Carbs', 0) for date in dates]
     veggies = [data['dates'][date].get('Veggies', 0) for date in dates]
+    protein = [data['dates'][date].get('Protein', 0) for date in dates]
+    # line plot this data
+    print(dates)
+    print(carbs)
+    print(veggies)
+    print(protein)
 
 
-    x = np.arange(len(dates))  # X-axis positions
-    width = 0.35  # Bar width
+    #plt.figure(figsize=(10,4))
+    # needs to be able to show all the data and dates
+    plt.figure(figsize=(10,6))
 
-    plt.figure(figsize=(6,4))
-    plt.bar(x - width/2, carbs, width, label="Carbs", color="orange")
-    plt.bar(x + width/2, veggies, width, label="Veggies", color="green")
+    plt.plot(dates, carbs, marker='o', linestyle='-', label='Carbs')
+    plt.plot(dates, veggies, marker='o', linestyle='-', label='Veggies')
+    plt.plot(dates, protein, marker='o', linestyle='-', label='Protein')
 
-    plt.xlabel("Month")
+    # order the x-axis
+    plt.xticks(dates, rotation=45)
+
+
+    
+    plt.xlabel("Date")
     plt.ylabel("Count")
-    plt.title("Carbs and Veggies Over Time")
-    plt.xticks(x, dates)  # Set custom labels for X-axis
+    plt.title(f"Category Counts for {user}")
     plt.legend()
 
     # Save plot to a BytesIO object
@@ -168,6 +180,7 @@ def bar_chart():
     plt.savefig(img, format='png')
     img.seek(0)
     plt.close()
+
 
     return Response(img.getvalue(), mimetype='image/png')
 
