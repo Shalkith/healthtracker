@@ -15,7 +15,8 @@ def main():
     
     if request.method == "GET":
         now = datetime.now()
-        date = now.strftime("%Y-%m-%d %H:%M:%S")
+        date = now.strftime("%Y-%m-%d %H:%M")
+        print(date)
         con = db_runner.connect()
         selections = db_runner.get_data(con,'select * from selections')
         users = db_runner.get_data(con,'select * from users')
@@ -151,7 +152,11 @@ def stats(user):
                         xanchor="center",  # Anchor legend to the center
                         y=1.1,  # Move legend above the chart (1.1 pushes it up)
                         yanchor="bottom",  # Anchor legend to the bottom),
-        ))
+        )   ,
+    modebar=dict(
+        remove=['zoom', 'pan', 'reset', 'hover', 'lasso', 'select']
+    ))
+
 
         # Convert Plotly figure to JSON
         graph_json = fig.to_json()
