@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Log Chart</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Category Counts for {{ user }}</h1>
+    <div id="chart"></div>
+
+    <script>
+        var graphJSON = {{ graph_json | safe }};
+        Plotly.newPlot("chart", graphJSON.data, graphJSON.layout);
+    </script>
+</body>
+</html>

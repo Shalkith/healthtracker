@@ -29,7 +29,7 @@ add bootstrap
     <option value="{{ name['name'] }}">{{ name['name'] }}</option>
     {% endfor %}
 </select><br>
-<input type="date" name="date" id="date" class="form-control" value={{ date }}  required><br>
+<input type="datetime-local" name="date" id="date" class="form-control" value="{{ date }}"  required><br>
 
             <input type="hidden" name="option" id="selectedOption" value="" required>
             <div class="d-flex flex-column flex-md-row justify-content-center gap-2" role="group" aria-label="Options" data-bs-toggle="buttons" required>
