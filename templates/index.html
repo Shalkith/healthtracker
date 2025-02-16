@@ -26,7 +26,11 @@ add bootstrap
 <!-- add a dropdown selector for names -->
 <select name="name" id="name" class="form-select" aria-label="Select a name" required>
     {% for name in users %}
+    {% if name['name'] == loggedin %}
+    <option selected value="{{ name['name'] }}">{{ name['name'] }}</option>
+    {% else %}
     <option value="{{ name['name'] }}">{{ name['name'] }}</option>
+    {% endif %}
     {% endfor %}
 </select><br>
 <input type="datetime-local" name="date" id="date" class="form-control" value="{{ date }}"  required><br>

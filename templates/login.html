@@ -1,0 +1,25 @@
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+{% include 'header.html' %}
+
+
+
+{% block y %}
+
+<h1> Login </h1>
+
+
+<form action="/login" method="POST">
+<select name="name" id="name" class="form-select" aria-label="Who are you?" required>
+    <option selected disabled value="">Who are you?</option>
+    {% for name in users %}
+    <option value="{{ name['name'] }}">{{ name['name'] }}</option>
+    {% endfor %}
+</select><br>
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </form>
+
+{% endblock %}

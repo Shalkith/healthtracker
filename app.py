@@ -1,4 +1,5 @@
-from flask import Flask, render_template,request,redirect, Response, flash
+from flask import Flask, render_template,request,redirect, Response, flash, session
+from flask_session import Session
 from scripts import mariadb_runner
 from datetime import datetime
 import numpy as np
@@ -9,10 +10,36 @@ db_runner = mariadb_runner
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"  # Required for flashing messages
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+
+@app.route("/login", methods=["POST", "GET"])
+def login():
+  # if form is submited
+    if request.method == "POST":
+        # record the user name
+        session["name"] = request.form.get("name")
+        # redirect to the main page
+        return redirect("/")
+    con = db_runner.connect()
+    # get the users from the database
+    users = db_runner.get_data(con,'select * from users')
+    db_runner.close_connection(con)
+
+    return render_template("login.html", users=users)
+
+@app.route("/logout")
+def logout():
+    session["name"] = None
+    return redirect("/")
 
 @app.route("/",  methods=["GET", "POST"])
 def main():
-    
+      # check if the users exist or not
+    if not session.get("name"):
+        # if not there in the session then redirect to the login page
+        return redirect("/login")
     if request.method == "GET":
         now = datetime.now()
         date = now.strftime("%Y-%m-%d %H:%M")
@@ -41,6 +68,9 @@ def main():
 
 @app.route("/insert",  methods=["GET", "POST"])
 def insert():
+    if not session.get("name"):
+        # if not there in the session then redirect to the login page
+        return redirect("/login")
     if request.method == "GET":
         return render_template('insert.html')
     con = db_runner.connect()
@@ -52,6 +82,9 @@ def insert():
 
 @app.route("/addnewuser",  methods=["GET", "POST"])    
 def addnewuser():
+    if not session.get("name"):
+        # if not there in the session then redirect to the login page
+        return redirect("/login")
     if request.method == "GET":
         return render_template('addnew.html',option='user')
     con = db_runner.connect()
@@ -63,6 +96,9 @@ def addnewuser():
 
 @app.route("/addnewselection",  methods=["GET", "POST"])    
 def addnewselection():
+    if not session.get("name"):
+        # if not there in the session then redirect to the login page
+        return redirect("/login")
     if request.method == "GET":
         return render_template('addnew.html',option='selection')
     con = db_runner.connect()
@@ -74,7 +110,9 @@ def addnewselection():
 
 @app.route("/stats/<user>",  methods=["GET", "POST"])
 def stats(user):
-    
+    if not session.get("name"):
+        # if not there in the session then redirect to the login page
+        return redirect("/login")
     con = db_runner.connect()
     if request.method == "GET":
         #users = db_runner.get_data(con,'select * from users')
@@ -178,6 +216,9 @@ def stats(user):
 
 @app.route("/stats/",  methods=["GET", "POST"])
 def getstats():
+    if not session.get("name"):
+        # if not there in the session then redirect to the login page
+        return redirect("/login")
     con = db_runner.connect()
     if request.method == "GET":
         users = db_runner.get_data(con,'select * from users')
@@ -191,6 +232,10 @@ def getstats():
 def index():
     flash("This is a toast message!", "success")  # Flash message with a category
     return render_template("toast.html")
+
+@app.context_processor
+def inject_variable():
+    return dict(loggedin=session["name"])
 
 if __name__ == '__main__':
     print("Starting Flask app")
