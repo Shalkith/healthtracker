@@ -10,7 +10,7 @@ db_runner = mariadb_runner
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"  # Required for flashing messages
-app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
