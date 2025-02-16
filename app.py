@@ -87,7 +87,9 @@ def stats(user):
         categories = set()
 
         for row in stats:
-            date = row[1]
+            datetimerow = row[1]
+            # convert date from datetime to date
+            date = datetime.strptime(str(datetimerow), '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d')
             category = row[2]
             print(row)
             user = row[4]
@@ -129,10 +131,17 @@ def stats(user):
         fig.add_trace(go.Scatter(x=dates, y=protein, mode='lines+markers', name='Protein'))
 
         # Filter out zero values for weight (lbs)
-        filtered_dates = [date for date, weight in zip(dates, lbs) if weight != 0]
-        filtered_lbs = [weight for weight in lbs if weight != 0]
-        fig.add_trace(go.Scatter(x=filtered_dates, y=filtered_lbs, mode='lines+markers', name='Weight (lbs)',yaxis='y2'))
-
+        try:
+            filtered_dates = [date for date, weight in zip(dates, lbs) if weight != 0]
+            filtered_lbs = [weight for weight in lbs if weight != 0]
+            fig.add_trace(go.Scatter(x=filtered_dates, y=filtered_lbs, mode='lines+markers', name='Weight (lbs)',yaxis='y2'))
+        except Exception as e:
+            print(f"Error filtering weight data: {e}")
+            filtered_dates = []
+            filtered_lbs = [0]
+        if filtered_lbs == []:
+            filtered_lbs = [0]
+        print(filtered_lbs)
         fig.update_layout(
             title=f"Category Totals for {user}",
             xaxis_title="Date & Time",
@@ -142,7 +151,7 @@ def stats(user):
                 side="right", 
                 overlaying='y', 
                 showgrid=False,
-                range=[0, max(filtered_lbs) + 10],  # Adjust range as needed
+                range=[0,max(filtered_lbs) + 10],  # Adjust range as needed
             ),
             xaxis=dict(tickangle=-45, type="date"),  # Keep datetime format
             template="plotly_white",
