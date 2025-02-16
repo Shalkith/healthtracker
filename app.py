@@ -235,7 +235,10 @@ def index():
 
 @app.context_processor
 def inject_variable():
-    return dict(loggedin=session["name"])
+    try:
+        return dict(loggedin=session["name"])
+    except:
+        return dict()
 
 if __name__ == '__main__':
     print("Starting Flask app")
